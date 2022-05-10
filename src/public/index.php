@@ -6,6 +6,7 @@ use Phalcon\Mvc\View;
 use Phalcon\Mvc\Application;
 use Phalcon\Url;
 use Phalcon\Config;
+use Phalcon\Config\ConfigFactory;
 
 // Define some absolute path constants to aid in locating resources
 define('BASE_PATH', dirname(__DIR__));
@@ -40,6 +41,16 @@ $container->set(
         $url = new Url();
         $url->setBaseUri('/');
         return $url;
+    }
+);
+
+$container->set(
+    'config',
+    function () {
+        $fileName = '../app/storage/config.php';
+        $factory  = new ConfigFactory();
+        $config   = $factory->newInstance('php', $fileName);
+        return $config;
     }
 );
 
