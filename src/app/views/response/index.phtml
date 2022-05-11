@@ -1,0 +1,94 @@
+<style>
+    body{
+        background:#1abc9c;
+    }
+    .description{
+        font-family: 'Vollkorn', serif;
+        text-align:center;
+        color:#ecf0f1;
+        text-shadow:0 0.1em 0.2em #008c8d;
+    }
+</style>
+
+<!-- Description -->
+<h1 class="description">
+    Responsive table with json data.
+</h1>
+
+<!-- Table demo -->
+<div class="box-table">
+    <?php
+    $json = '{
+      "photo":"image url ",
+      "name":"Jhon",
+      "last":"Smith",
+      "email":"jhony@site.com",
+      "phone":"1-555-222-333",
+      "web":"http://jhonSmith.com"
+   },
+   {
+      "photo":"image url",
+      "name":"Carla",
+      "last":"Doe",
+      "email":"carladoe@site.com",
+      "phone":"1-333-111-555",
+      "web":"http://carladoe.com"
+   }';
+
+   use Phalcon\Http\Response;
+
+    // Getting a response instance
+    $response = new Response();
+
+    // $response->setStatusCode(200, 'Json Found');
+    // $response->setContent( $json );
+    // if (true !== $response->isSent()) {
+    //     $response->send();
+    // }
+
+
+    /**
+     *  Pick a file and download.
+     */
+    // $contents = file_get_contents('../app/storage/files/hdfc.pdf');
+    
+    // $response
+    //     ->setContent($contents)
+    //     ->setContentType('application/pdf')
+    //     ->setHeader(
+    //         'Content-Disposition', 
+    //         "attachment; filename=hdfc.pdf"
+    //     )
+    //     ->send();
+
+    /**
+     *  Print custom data in this place.
+     */
+    // $contents = [
+    //     'invoice' => [
+    //         'id'    => 12345,
+    //         'name'  => 'invoice.pdf',
+    //         'date'  => '2019-01-01 01:02:03',
+    //         'owner' => 'admin',
+    //     ]   
+    // ];
+    
+    // $response
+    //     ->setJsonContent($contents, JSON_PRETTY_PRINT, 512)
+    //     ->send();
+
+    $response
+        ->setHeader(
+            'Content-Type', 
+            'application/pdf'
+        )
+        ->setHeader(
+            'Content-Disposition', 
+            "attachment; filename='downloaded.pdf'"
+        )
+    ;
+
+    $response->setRawHeader('HTTP/1.1 200 OK');
+
+   ?>
+</div>
