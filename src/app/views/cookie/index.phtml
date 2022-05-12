@@ -1,0 +1,15 @@
+<?php
+use Phalcon\Http\Cookie;
+
+$cookie  = new Cookie(
+    'my-cookie',                   // name
+    1234,                          // value
+    time() + 86400,                // expires
+    "/",                           // path
+    true,                          // secure
+    ".phalcon.io",                 // domain
+    true,                          // httponly
+    [                              // options
+        "samesite" => "Strict",    // 
+    ]                              // 
+);

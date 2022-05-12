@@ -1,0 +1,7 @@
+<?php
+
+use Phalcon\Http\Request;
+
+$request = new Request();
+$email = $request->getQuery('user');
+echo '<pre>'; var_dump( $email ); echo '</pre>';

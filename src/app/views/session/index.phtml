@@ -1,0 +1,54 @@
+<?php
+
+// use Phalcon\Session\Manager;
+// use Phalcon\Session\Adapter\Stream;
+
+// $session = new Manager();
+// $files = new Stream(
+//     [
+//         'savePath' => '/tmp',
+//     ]
+// );
+
+
+// $session
+//     ->setAdapter($files)
+//     ->start();
+
+// echo '<pre>'; print_r( $session->regenerateId() ); echo '</pre>';
+
+// use Phalcon\Session\Manager;
+// use Phalcon\Session\Adapter\Stream;
+
+// $session = new Manager();
+// $files = new Stream(
+//     [
+//         'savePath' => '/tmp',
+//     ]
+// );
+
+// $session
+//     ->setAdapter($files)
+//     ->start();
+
+// var_dump( $session->has('userId') );
+// var_dump(
+//     isset($session->userId)
+// );
+
+
+use Phalcon\Session\Manager;
+use Phalcon\Session\Adapter\Stream;
+
+$session = new Manager();
+$files = new Stream(
+    [
+        'savePath' => '/tmp',
+    ]
+);
+
+$session
+    ->setAdapter($files)
+    ->start();
+
+$session->set('userId', rand());
