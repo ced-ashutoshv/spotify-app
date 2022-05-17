@@ -7,6 +7,7 @@ use Phalcon\Mvc\Application;
 use Phalcon\Url;
 use Phalcon\Config;
 use Phalcon\Config\ConfigFactory;
+use Phalcon\Mvc\Router;
 
 // Define some absolute path constants to aid in locating resources
 define('BASE_PATH', dirname(__DIR__));
@@ -19,6 +20,13 @@ $loader->registerDirs(
     [
         APP_PATH . '/controllers/',
         APP_PATH . '/models/',
+    ]
+);
+
+$loader->registerNamespaces(
+    [
+       'Spotify\Admin\Controllers' => APP_PATH . '/controllers/',
+       'Spotify\Admin\Models'      => APP_PATH . '/models/',
     ]
 );
 
@@ -47,7 +55,7 @@ $container->set(
 $container->set(
     'config',
     function () {
-        $fileName = '../app/storage/config.php';
+        $fileName = '../app/etc/config.php';
         $factory  = new ConfigFactory();
         $config   = $factory->newInstance('php', $fileName);
         return $config;
@@ -55,6 +63,10 @@ $container->set(
 );
 
 $application = new Application($container);
+
+
+// Register autoloader
+$loader->register();
 
 try {
     // Handle the request
