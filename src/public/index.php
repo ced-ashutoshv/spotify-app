@@ -62,17 +62,21 @@ $container->set(
     }
 );
 
-// $di = new Phalcon\DI();
+$application = new Application($container);
 
-// //Register a "db" service in the container
-// $di->setShared('db', function() {
-//     return new Connection(array(
-//         "host" => "localhost",
-//         "username" => "root",
-//         "password" => "secret",
-//         "dbname" => "phalcon"
-//     ));
-// });
+$container->set(
+    'db',
+    function () {
+        return new Mysql(
+            [
+                'host'     => 'localhost',
+                'username' => 'root',
+                'password' => 'secret',
+                'dbname'   => 'phalcon',
+            ]
+        );
+    }
+);
 
 $application = new Application($container);
 
