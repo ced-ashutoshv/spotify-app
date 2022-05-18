@@ -9,4 +9,10 @@
             'version'  => '1.0.0',
             'time'     => microtime(true),
         ],
+        'db' => [
+            'host' => 'localhost',
+            'username' => 'root',
+            'password' => 'secret',
+            'dbname' => 'phalcon'
+        ]
     ];

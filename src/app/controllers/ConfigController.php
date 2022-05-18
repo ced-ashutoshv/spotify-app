@@ -8,7 +8,8 @@ class ConfigController extends Controller{
     }
 
     public function showAction(){
-        $config = $this->di->get('config');
-        $this->view->appName = $config->get('app')->get('name');
+        $config                   = $this->di->get('config');
+        $this->view->appName      = $config->get('app')->get('name');
+        $this->view->dbKeys       = $config->get('db');
     }
 }

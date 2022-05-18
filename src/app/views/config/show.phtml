@@ -24,7 +24,7 @@
 
     section h2 {
         position: relative;
-        font-size: 150px;
+        font-size: 100px;
         text-align: center;
         line-height: 0.75em;
         text-transform: uppercase;
@@ -32,7 +32,7 @@
     }
 
     section h2 span {
-        font-size: 145px;
+        font-size: 90px;
         color: transparent;
         -webkit-text-stroke: 0.3vw #000;
     }
@@ -57,3 +57,21 @@
     </section>
 </body>
 </html>
+<?php
+use Phalcon\Db;
+use Phalcon\Db\Exception;
+use Phalcon\Db\Adapter\Pdo\Mysql;
+
+$args = [
+    'host'      =>  $dbKeys->get( 'host' ),
+    'username'  =>  $dbKeys->get( 'username' ),
+    'password'  =>  $dbKeys->get( 'password' ),
+    'dbname'    =>  $dbKeys->get( 'dbname' ),
+];
+
+$connection = new Mysql( $args );
+
+echo '<pre>'; print_r( $connection ); echo '</pre>'; die;
+$invoice = $connection->exec(
+    'SELECT * FROM Persons'
+);
