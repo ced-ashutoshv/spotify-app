@@ -8,6 +8,7 @@ use Phalcon\Url;
 use Phalcon\Config;
 use Phalcon\Config\ConfigFactory;
 use Phalcon\Mvc\Router;
+use Phalcon\Db\Adapter\Pdo\Mysql;
 
 // Define some absolute path constants to aid in locating resources
 define('BASE_PATH', dirname(__DIR__));
@@ -20,13 +21,6 @@ $loader->registerDirs(
     [
         APP_PATH . '/controllers/',
         APP_PATH . '/models/',
-    ]
-);
-
-$loader->registerNamespaces(
-    [
-       'Spotify\Admin\Controllers' => APP_PATH . '/controllers/',
-       'Spotify\Admin\Models'      => APP_PATH . '/models/',
     ]
 );
 
@@ -62,14 +56,12 @@ $container->set(
     }
 );
 
-$application = new Application($container);
-
 $container->set(
     'db',
     function () {
         return new Mysql(
             [
-                'host'     => 'localhost',
+                'host'     => 'mysql-server',
                 'username' => 'root',
                 'password' => 'secret',
                 'dbname'   => 'phalcon',

@@ -1,17 +1,13 @@
 <?php
 
 use Phalcon\Mvc\Controller;
+use Phalcon\Mvc\Loader;
 use Phalcon\Http\Request;
 use Phalcon\Http\Response;
 
+
 class LoginController extends Controller {
     public function indexAction() {
-
-        // Add some local CSS resources
-        $this->assets->addCss( BASE_PATH . '/public/css/style.css' );
-
-        // And some local JavaScript resources
-        $this->assets->addJs( BASE_PATH . '/public/js/jquery.js' );
     }
 
     public function validateAction() {
@@ -35,7 +31,38 @@ class LoginController extends Controller {
             if ( empty( $formdata ) ) {
                 $this->failResponse();
             } else {
-                echo '<pre>'; print_r( $formdata ); echo '</pre>';
+   
+                $user = new Users();
+
+                $formdata['password'] = $formdata['pass'];
+                unset( $formdata['pass'] );
+                unset( $formdata['cpass'] );
+
+                //assign value from the form to $user.
+                $user->assign(
+                    $formdata,
+                    [
+                        'name',
+                        'email',
+                        'password'
+                    ]
+                );
+        
+                // // Store and check for errors
+                $success = $user->save();
+
+                // Passing the result to the view.
+                $this->view->success = $success;
+        
+                if ( $success ) {
+                    $message = "Thanks for registering!";
+                } else {
+                    $message = "Sorry, the following problems were generated:<br>" . implode( '<br>', $user->getMessages() );
+                }
+
+                // passing a message to the view
+                $this->view->message = $message;
+                $this->view->id = $user->id;
             }
         } else {
             $this->failResponse();

@@ -24,3 +24,5 @@ RUN set -xe && \
         ${PWD}/cphalcon-${PHALCON_VERSION} \
     && \
     php -m
+
+RUN docker-php-ext-install mysqli pdo pdo_mysql
