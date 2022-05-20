@@ -51,6 +51,9 @@
 <html lang="en">
 
 <body>
+
+    <?php $this->partial('layouts/header'); ?>
+
     <section>
         <h2>Welcome to<br><br><span><?php echo $appName; ?></span></h2>
         <div class="black"></div>
@@ -72,6 +75,3 @@ $args = [
 $connection = new Mysql( $args );
 
 echo '<pre>'; print_r( $connection ); echo '</pre>'; die;
-$invoice = $connection->exec(
-    'SELECT * FROM Persons'
-);

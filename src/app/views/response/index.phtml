@@ -9,6 +9,7 @@
         text-shadow:0 0.1em 0.2em #008c8d;
     }
 </style>
+<?php $this->partial('layouts/header'); ?>
 
 <!-- Description -->
 <h1 class="description">
@@ -40,11 +41,11 @@
     // Getting a response instance
     $response = new Response();
 
-    // $response->setStatusCode(200, 'Json Found');
-    // $response->setContent( $json );
-    // if (true !== $response->isSent()) {
-    //     $response->send();
-    // }
+    $response->setStatusCode(200, 'Json Found');
+    $response->setContent( $json );
+    if (true !== $response->isSent()) {
+        $response->send();
+    }
 
 
     /**
@@ -77,18 +78,18 @@
     //     ->setJsonContent($contents, JSON_PRETTY_PRINT, 512)
     //     ->send();
 
-    $response
-        ->setHeader(
-            'Content-Type', 
-            'application/pdf'
-        )
-        ->setHeader(
-            'Content-Disposition', 
-            "attachment; filename='downloaded.pdf'"
-        )
-    ;
+    // $response
+    //     ->setHeader(
+    //         'Content-Type', 
+    //         'application/pdf'
+    //     )
+    //     ->setHeader(
+    //         'Content-Disposition', 
+    //         "attachment; filename='downloaded.pdf'"
+    //     )
+    // ;
 
-    $response->setRawHeader('HTTP/1.1 200 OK');
+    // $response->setRawHeader('HTTP/1.1 200 OK');
 
    ?>
 </div>

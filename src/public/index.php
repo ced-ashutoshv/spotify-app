@@ -49,7 +49,7 @@ $container->set(
 $container->set(
     'config',
     function () {
-        $fileName = '../app/etc/config.php';
+        $fileName = '../app/storage/config.php';
         $factory  = new ConfigFactory();
         $config   = $factory->newInstance('php', $fileName);
         return $config;

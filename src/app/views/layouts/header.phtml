@@ -1,0 +1,51 @@
+<style>
+    .navbar {
+        position: absolute;
+        justify-content: center;
+        align-items: center;
+        background: #76B852;
+        height: 35px;
+        border-radius: 14px 14px 0px 0px;
+        position: relative;
+        font-size: 25px;
+    }
+    .fa-user, .fa-home, .fa-cogs, .fa-opencart, .fa-wrench, .fa-info, .fa-star, .fa-list, .fa-clipboard {
+        color: #fff;
+        float: left;
+        margin: 5px 20px;
+    }
+    .fa-user:hover, .fa-home:hover, .fa-cogs:hover, .fa-opencart:hover, .fa-wrench:hover, .fa-info:hover, .fa-star:hover, .fa-list:hover, .fa-clipboard:hover
+    {
+        color: #ff0000;
+        transition: 0.5s;
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg); 
+        animation: bounce 1s infinite;
+    }
+    .fa-home:hover:after {
+        color: #ff00ff;
+        transition: 0.5s;
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+</style>
+
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+  <div class="navbar">
+    <a href="/"><i class="fa fa-home"></i></a>
+    <a href="/login"><i class="fa fa-user"></i></a>
+    <a href="/request"><i class="fa fa-opencart"></i></a>
+    <a href="/response"><i class="fa fa-info"></i></a>
+    <a href=""><i class="fa fa-star"></i></a>
+    <a href="/config/show"><i class="fa fa-list"></i></a>
+    <a href="/users"><i class="fa fa-clipboard"></i></a>
+  </div>
