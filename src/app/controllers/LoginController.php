@@ -4,7 +4,9 @@ use Phalcon\Mvc\Controller;
 use Phalcon\Mvc\Loader;
 use Phalcon\Http\Request;
 use Phalcon\Http\Response;
-
+use Phalcon\Mvc\Model\Query;
+use Phalcon\Session\Manager;
+use Phalcon\Session\Adapter\Stream;
 
 class LoginController extends Controller {
     public function indexAction() {
@@ -17,7 +19,35 @@ class LoginController extends Controller {
             if ( empty( $formdata ) ) {
                 $this->failResponse();
             } else {
-                echo '<pre>'; print_r( $formdata ); echo '</pre>';
+                $formdata['password'] = $formdata['pass'];
+                unset( $formdata['pass'] );
+
+                // Instantiate the Query 
+                $query = new Query( 
+                    "SELECT * FROM Users WHERE email = '" . $formdata['email'] . "' AND password = '" . $formdata['password'] . "'", 
+                    $this->getDI() 
+                );
+                
+                // Execute the query returning a result if any 
+                $users = $query->execute(); 
+                foreach ( $users as $key => $user) {
+                    break;
+                }
+
+                if ( empty( $user ) ) {
+                    $this->failResponse();
+                } else {
+                    $user_id = $user->id;
+                    $session = new Manager();
+                    $files = new Stream(
+                        [
+                            'savePath' => '/tmp',
+                        ]
+                    );
+                    $session->setAdapter($files)->start();
+                    $session->set( 'userId', $user_id );
+                    $this->response->redirect('users/' . $user_id);
+                }
             }
         } else {
             $this->failResponse();
@@ -48,7 +78,7 @@ class LoginController extends Controller {
                     ]
                 );
         
-                // // Store and check for errors
+                // // Store and check for errors.
                 $success = $user->save();
 
                 // Passing the result to the view.
@@ -60,20 +90,20 @@ class LoginController extends Controller {
                     $message = "Sorry, the following problems were generated:<br>" . implode( '<br>', $user->getMessages() );
                 }
 
-                // passing a message to the view
+                // passing a message to the view.
                 $this->view->message = $message;
-                $this->view->id = $user->id;
+                $this->view->id      = $user->id;
             }
         } else {
             $this->failResponse();
         }
     }
 
+    public function notifyAction() {
+    }
+
     public function failResponse() {
         // Getting a response instance
-        $response = new Response();
-        $contents = file_get_contents( APP_PATH . '/views/login/notify.phtml');
-        $response->setContent($contents);
-        $response->send();
+       $this->response->redirect('login/notify');
     }
 }
