@@ -88,13 +88,11 @@ class LoginController extends Controller {
                 // passing a message to the view.
                 $this->view->message = $message;
                 $this->view->id      = $user->id;
+                $this->session->set( 'userId', $user_id );
             }
         } else {
             $this->failResponse();
         }
-    }
-
-    public function notifyAction() {
     }
 
     public function failResponse() {
