@@ -7,8 +7,10 @@ use Phalcon\Http\Response;
 use Phalcon\Mvc\Model\Query;
 use Phalcon\Session\Manager;
 use Phalcon\Session\Adapter\Stream;
+use Phalcon\Session\Adapter\Files as Session;
 
 class LoginController extends Controller {
+
     public function indexAction() {
     }
 
@@ -22,13 +24,13 @@ class LoginController extends Controller {
                 $formdata['password'] = $formdata['pass'];
                 unset( $formdata['pass'] );
 
-                // Instantiate the Query 
+                // Instantiate the Query.
                 $query = new Query( 
                     "SELECT * FROM Users WHERE email = '" . $formdata['email'] . "' AND password = '" . $formdata['password'] . "'", 
                     $this->getDI() 
                 );
                 
-                // Execute the query returning a result if any 
+                // Execute the query returning a result if any.
                 $users = $query->execute(); 
                 foreach ( $users as $key => $user) {
                     break;
@@ -38,14 +40,7 @@ class LoginController extends Controller {
                     $this->failResponse();
                 } else {
                     $user_id = $user->id;
-                    $session = new Manager();
-                    $files = new Stream(
-                        [
-                            'savePath' => '/tmp',
-                        ]
-                    );
-                    $session->setAdapter($files)->start();
-                    $session->set( 'userId', $user_id );
+                    $this->session->set( 'userId', $user_id );
                     $this->response->redirect('users/' . $user_id);
                 }
             }
@@ -104,6 +99,11 @@ class LoginController extends Controller {
 
     public function failResponse() {
         // Getting a response instance
-       $this->response->redirect('login/notify');
+        $response = new Response();
+
+        $content = sprintf( 'Sorry, the user doesn\'t exist. Please check your credentials again. <a href="/login">Go Back to Login</a>' );
+        $response->setStatusCode(403, 'Authorization failed');
+        $response->setContent($content);
+        $response->send();
     }
 }

@@ -117,7 +117,8 @@
     
     <form class="login-form" method="post" action="/login/validate">
       <input required="required" type="email" name="formdata[email]" placeholder="email address"/>
-      <input required="required" type="password" name="formdata[pass]" placeholder="password"/>
+      <input required="required" type="password" name="formdata[pass]" placeholder="password"/> Remember me
+      <input type="checkbox" name="formdata[remember]" placeholder="password"/>
       <button type="submit">login</button>
       <p class="message">Not registered? <a href="#">Create an account</a></p>
     </form>

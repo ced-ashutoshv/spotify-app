@@ -9,6 +9,7 @@ use Phalcon\Config;
 use Phalcon\Config\ConfigFactory;
 use Phalcon\Mvc\Router;
 use Phalcon\Db\Adapter\Pdo\Mysql;
+use Phalcon\Session\Adapter\Stream as Session;
 
 // Define some absolute path constants to aid in locating resources
 define('BASE_PATH', dirname(__DIR__));
@@ -70,14 +71,26 @@ $container->set(
     }
 );
 
-$application = new Application($container);
+// Start the session the first time when some component request the session service
+// $container->set(
+//     'session',
+//     function () {
+//         $session = new Session();
+//         $files = new Phalcon\Session\Adapter\Stream([
+//             '/tmp'
+//         ]);
+//         $session->setAdapter($files)->start();
+//         return $session;
+//     }
+// );
 
+$application = new Application( $container );
 
-// Register autoloader
+// Register autoloader.
 $loader->register();
 
 try {
-    // Handle the request
+    // Handle the request.
     $response = $application->handle(
         $_SERVER["REQUEST_URI"]
     );
