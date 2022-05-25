@@ -11,6 +11,7 @@ use Phalcon\Mvc\Router;
 use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Session\Manager;
 use Phalcon\Session\Adapter\Stream;
+use Phalcon\Http\Cookie;
 
 // Define some absolute path constants to aid in locating resources
 define('BASE_PATH', dirname(__DIR__));
@@ -73,20 +74,6 @@ $container->set(
 );
 
 // Start the session the first time when some component request the session service
-// $container->set(
-//     'session',
-//     function () {
-//         $session = new Session();
-//         $files = new Phalcon\Session\Adapter\Stream([
-//             '/tmp'
-//         ]);
-//         $session->setAdapter($files)->start();
-//         return $session;
-//     }
-// );
-
-
-
 $container->set(
     'session',
     function () {
@@ -100,6 +87,27 @@ $container->set(
         $session->start();
 
         return $session;
+    },
+    true
+);
+
+$container->set(
+    'cookie',
+    function () {
+        $auth = $_COOKIE['remember_me'] ?? false;
+        $cookie  = new Cookie(
+            'user-auth',                   // name
+            $auth,                       // value
+            time() + 86400,                // expires
+            "/",                           // path
+            true,                          // secure
+            ".phalcon.io",                 // domain
+            true,                          // httponly
+            [                              // options
+                "samesite" => "Strict",    // 
+            ]                              // 
+        );
+        return $cookie;
     },
     true
 );

@@ -41,6 +41,7 @@ class LoginController extends Controller {
                 } else {
                     $user_id = $user->id;
                     $this->session->set( 'userId', $user_id );
+                    setcookie('remember_me', $user_id, time() + (86400 * 30)); // 86400 = 1 days
                     $this->response->redirect('users/' . $user_id);
                 }
             }
