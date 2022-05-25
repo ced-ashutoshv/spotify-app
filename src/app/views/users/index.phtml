@@ -119,7 +119,6 @@
 
 <?php $this->partial('layouts/header'); ?>
 
-
 <?php 
     $users = Users::find(
         [
@@ -134,10 +133,12 @@
      echo "<h1>User Not Logged in</h1>";
      return;
    }
-
-?>
+   ?>
 <div class='container'>
 <a href = "/users/logout">Logout</a>
+  <?php if ( $date ) : ?>
+    <span>Current time : <?php echo $date; ?></span>
+   <?php endif; ?>
   <div class='avatar'>
     <img src='https://previews.123rf.com/images/djvstock/djvstock1508/djvstock150806893/44095667-web-developer-design-vector-illustration-eps-10-.jpg?format=auto&amp;version=1638034680&amp;width=300&amp;height=300'>
   </div>

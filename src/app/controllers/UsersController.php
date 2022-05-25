@@ -15,6 +15,7 @@ class UsersController extends Controller {
         }
 
         $this->view->user_id = $this->session->get( 'userId' ) ?? $user_id;
+        $this->view->date    = $this->di->get( 'timestamp' ) ?? false;
     }
 
     public function logoutAction() {

@@ -112,6 +112,15 @@ $container->set(
     true
 );
 
+$container->set(
+    'timestamp',
+    function () {
+        return date("Y/m/d");
+    },
+    true
+);
+
+
 $application = new Application( $container );
 
 // Register autoloader.
