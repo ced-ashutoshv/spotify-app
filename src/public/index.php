@@ -24,6 +24,14 @@ $loader->registerDirs(
     [
         APP_PATH . '/controllers/',
         APP_PATH . '/models/',
+        APP_PATH . '/components/',
+    ]
+);
+
+// Register some classes
+$loader->registerFiles(
+    [
+        '../app/components/myescaper.php',
     ]
 );
 

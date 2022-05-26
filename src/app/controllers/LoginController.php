@@ -7,17 +7,30 @@ use Phalcon\Http\Response;
 use Phalcon\Mvc\Model\Query;
 use Phalcon\Session\Manager;
 use Phalcon\Session\Adapter\Stream;
-use Phalcon\Session\Adapter\Files as Session;
+use Phalcon\Session\Adapter\Files;
 
 class LoginController extends Controller {
 
+    private $escaper;
+
     public function indexAction() {
     }
-
+    
     public function validateAction() {
+
+        // Register some classes.
+        // require_once APP_PATH . '/components/myescaper.php';
+
         $request = new Request();
         if ( true === $request->isPost() ) {
+            
             $formdata = $request->get('formdata');
+            $escaper = new My_Escaper();
+
+            foreach ( $formdata as $key => $value ) {
+                $formdata[$key] = $escaper->sanitize( $value );
+            }
+
             if ( empty( $formdata ) ) {
                 $this->failResponse();
             } else {
@@ -54,9 +67,16 @@ class LoginController extends Controller {
         $request = new Request();
         if ( true === $request->isPost() ) {
             $formdata = $request->get('formdata');
+
             if ( empty( $formdata ) ) {
                 $this->failResponse();
             } else {
+
+                $escaper = new My_Escaper();
+
+                foreach ( $formdata as $key => $value ) {
+                    $formdata[$key] = $escaper->sanitize( $value );
+                }
    
                 $user = new Users();
 
@@ -73,13 +93,13 @@ class LoginController extends Controller {
                         'password'
                     ]
                 );
-        
+
                 // // Store and check for errors.
                 $success = $user->save();
 
                 // Passing the result to the view.
                 $this->view->success = $success;
-        
+
                 if ( $success ) {
                     $message = "Thanks for registering!";
                 } else {
@@ -90,7 +110,9 @@ class LoginController extends Controller {
                 $this->view->message = $message;
                 $this->view->id      = $user->id;
                 $this->session->set( 'userId', $user_id );
+
             }
+
         } else {
             $this->failResponse();
         }
