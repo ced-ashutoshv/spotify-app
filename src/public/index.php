@@ -12,6 +12,8 @@ use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Session\Manager;
 use Phalcon\Session\Adapter\Stream;
 use Phalcon\Http\Cookie;
+use Phalcon\Logger\AdapterFactory;
+use Phalcon\Logger\LoggerFactory;
 
 // Define some absolute path constants to aid in locating resources
 define('BASE_PATH', dirname(__DIR__));
@@ -128,6 +130,45 @@ $container->set(
     true
 );
 
+$container->set(
+    'signup-logger',
+    function () {
+        $config = [
+            "name"     => "prod-signup-logger",
+            "adapters" => [
+                "signup"  => [
+                    "adapter" => "stream",
+                    "name"    => "../app/logs/signup.log",
+                    "options" => []
+                ],
+            ],
+        ];
+        $adapterFactory = new AdapterFactory();
+        $loggerFactory  = new LoggerFactory($adapterFactory);
+        return $loggerFactory->load($config);
+    },
+    true
+);
+
+$container->set(
+    'login-logger',
+    function () {
+        $config = [
+            "name"     => "prod-login-logger",
+            "adapters" => [
+                "login" => [
+                    "adapter" => "stream",
+                    "name"    => "../app/logs/login.log",
+                    "options" => []
+                ],
+            ],
+        ];
+        $adapterFactory = new AdapterFactory();
+        $loggerFactory  = new LoggerFactory($adapterFactory);
+        return $loggerFactory->load($config);
+    },
+    true
+);
 
 $application = new Application( $container );
 

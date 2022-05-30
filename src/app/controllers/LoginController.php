@@ -18,20 +18,18 @@ class LoginController extends Controller {
     
     public function validateAction() {
 
-        // Register some classes.
-        // require_once APP_PATH . '/components/myescaper.php';
-
         $request = new Request();
         if ( true === $request->isPost() ) {
             
-            $formdata = $request->get('formdata');
             $escaper = new My_Escaper();
-
+            $formdata = $request->get('formdata');
             foreach ( $formdata as $key => $value ) {
                 $formdata[$key] = $escaper->sanitize( $value );
             }
 
             if ( empty( $formdata ) ) {
+                $message = 'No Valid data found in request';
+                $this->dump( 'login', $formdata, $message );
                 $this->failResponse();
             } else {
                 $formdata['password'] = $formdata['pass'];
@@ -50,6 +48,8 @@ class LoginController extends Controller {
                 }
 
                 if ( empty( $user ) ) {
+                    $message = 'Please check your credentials again.';
+                    $this->dump( 'login', $formdata, $message );
                     $this->failResponse();
                 } else {
                     $user_id = $user->id;
@@ -69,6 +69,8 @@ class LoginController extends Controller {
             $formdata = $request->get('formdata');
 
             if ( empty( $formdata ) ) {
+                $message = 'No Valid data found in request';
+                $this->dump( 'signup', $formdata, $message );
                 $this->failResponse();
             } else {
 
@@ -104,6 +106,7 @@ class LoginController extends Controller {
                     $message = "Thanks for registering!";
                 } else {
                     $message = "Sorry, the following problems were generated:<br>" . implode( '<br>', $user->getMessages() );
+                    $this->dump( 'signup', $formdata, $message );
                 }
 
                 // passing a message to the view.
@@ -126,5 +129,30 @@ class LoginController extends Controller {
         $response->setStatusCode(403, 'Authorization failed');
         $response->setContent($content);
         $response->send();
+    }
+
+    public function dump( $logger_type = false, $request = array(), $response = false ) {
+        switch ( $logger_type ) {
+            case 'login':
+                $logger = $this->di->get('login-logger');
+                break;
+            
+            case 'signup':
+                $logger = $this->di->get('signup-logger');
+                break;
+            
+            default:
+                $logger = array();
+                break;
+        }
+
+        $logger = $this->di->get('login-logger');
+
+        $log = PHP_EOL;
+        $log .= '-----------------------------------'. PHP_EOL;
+        $log .= 'Request : ' . print_r( $request, true ) . PHP_EOL;
+        $log .= 'Response : ' . print_r( $response, true ) . PHP_EOL;
+        $log .= '-----------------------------------';
+        $logger->error( $log );
     }
 }
